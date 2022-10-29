@@ -1,0 +1,11 @@
+C:\Users\dmx\source\repos\demo_final_huy\demo_final_huy\bin\Debug\netcoreapp2.2\demo_final_huy.deps.json
+C:\Users\dmx\source\repos\demo_final_huy\demo_final_huy\bin\Debug\netcoreapp2.2\demo_final_huy.runtimeconfig.json
+C:\Users\dmx\source\repos\demo_final_huy\demo_final_huy\bin\Debug\netcoreapp2.2\demo_final_huy.runtimeconfig.dev.json
+C:\Users\dmx\source\repos\demo_final_huy\demo_final_huy\bin\Debug\netcoreapp2.2\demo_final_huy.dll
+C:\Users\dmx\source\repos\demo_final_huy\demo_final_huy\bin\Debug\netcoreapp2.2\demo_final_huy.pdb
+C:\Users\dmx\source\repos\demo_final_huy\demo_final_huy\obj\Debug\netcoreapp2.2\demo_final_huy.csprojAssemblyReference.cache
+C:\Users\dmx\source\repos\demo_final_huy\demo_final_huy\obj\Debug\netcoreapp2.2\demo_final_huy.csproj.CoreCompileInputs.cache
+C:\Users\dmx\source\repos\demo_final_huy\demo_final_huy\obj\Debug\netcoreapp2.2\demo_final_huy.AssemblyInfoInputs.cache
+C:\Users\dmx\source\repos\demo_final_huy\demo_final_huy\obj\Debug\netcoreapp2.2\demo_final_huy.AssemblyInfo.cs
+C:\Users\dmx\source\repos\demo_final_huy\demo_final_huy\obj\Debug\netcoreapp2.2\demo_final_huy.dll
+C:\Users\dmx\source\repos\demo_final_huy\demo_final_huy\obj\Debug\netcoreapp2.2\demo_final_huy.pdb
