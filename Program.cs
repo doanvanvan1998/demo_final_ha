@@ -12,6 +12,7 @@ namespace demo_final_huy
     {
         static List<User> userList = new List<User>();
         static List<Product> productList = new List<Product>();
+        static List<Product> listProductAfterSell = new List<Product>();
         static int auto_increase_id = 0;
         static int auto_increase_id_product = 0;
         static string _filePath = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory);
@@ -76,9 +77,11 @@ namespace demo_final_huy
                             switch (number)
                             {
                                 case 1:
+                                    Console.WriteLine(user_lg.getName() + user_lg.getEmail() + "da vao chưc nang 1");
                                     productAdvertised(user_lg);
                                     break;
                                 case 2:
+                                    Console.WriteLine(user_lg.getName() + user_lg.getEmail() + "da vao chưc nang 2");
                                     getAllProduct(user_lg);
                                     break;
                                 case 3:
@@ -86,9 +89,11 @@ namespace demo_final_huy
                                     getAllProductOther(user_lg);
                                     break;
                                 case 4:
+                                    Console.WriteLine(user_lg.getName() + user_lg.getEmail() + "da vao chưc nang 4");
                                     getAllProductBid(user_lg);
                                     break;
                                 case 5:
+                                    Console.WriteLine(user_lg.getName() + user_lg.getEmail() + "da vao chưc nang 5");
                                     getAllpurchased(user_lg);
                                     break;
                                 case 6:
@@ -186,6 +191,7 @@ namespace demo_final_huy
                
 
             } while (statusCheckPass);
+            //Console.WriteLine(" User  " + user.getEmail() + "   " + user.getName() + "sign up success!!!");
             writeToFileRegister(user, file_name);
             readFromFileAllInfor(file_name);
             return check_firstLg;
@@ -224,11 +230,44 @@ namespace demo_final_huy
                 {
                     if(user.getEmail() == item.getEmail())
                     {
-                        Console.WriteLine("Please provide your home address \n Unit number");
-                        item.setUNum(int.Parse(Console.ReadLine()));
-                        Console.WriteLine("Street Number");
-                        item.setSNum(int.Parse(Console.ReadLine()));
-                        Console.WriteLine("Street Name");
+                    bool check_un = true;
+                    bool check_Snumb = true;
+                    bool check_postCode = true;
+                    do
+                    {
+                        try
+                        {
+                            Console.WriteLine("Please provide your home address \n Unit number");
+                            item.setUNum(int.Parse(Console.ReadLine()));
+                            check_un = false;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("k dung dinh dang");
+                        }
+                    } while (check_un);
+
+
+
+                    do
+                    {
+                        try
+                        {
+                            Console.WriteLine("Street Number");
+                            item.setSNum(int.Parse(Console.ReadLine()));
+                            if (item.getSNum() > 0)
+                            {
+                                check_Snumb = false;
+                            }
+                          
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("nhap k hop le");
+                        }
+
+                    } while (check_Snumb);
+                    Console.WriteLine("Street Name");
                         item.setStreetName(Console.ReadLine());
                         Console.WriteLine("Street Suffix");
                         item.setStreetSuffix(Console.ReadLine());
@@ -236,10 +275,35 @@ namespace demo_final_huy
                         item.setCity(Console.ReadLine());
                         Console.WriteLine("State");
                         item.setState(Console.ReadLine());
-                        Console.WriteLine("Postcode");
-                        item.setPostcode(int.Parse(Console.ReadLine()));
-                        Console.Write("Welcome " + user.getName());
+                    do
+                    {
+                        try
+                        {
+                            Console.WriteLine("Postcode");
+                            item.setPostcode ( int.Parse(Console.ReadLine()));
+                            if (1000 <= item.getPostcode() && item.getPostcode() <= 9999)
+                            {
+                                check_postCode = false;
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("nhap k hop le");
+                        }
+
+
+
+                    } while (check_postCode);
+                    Console.Write("Welcome " + user.getName());
+                    if (item.getUNum() == 0) {
+                        Console.WriteLine("Your address will be " + item.getUNum()  + " " + item.getStreetName() + " " + item.getStreetSuffix() + " " + item.getCity() + " " + item.getState() + " " + item.getPostcode());
+                    }
+                    else
+                    {
                         Console.WriteLine("Your address will be " + item.getUNum() + " " + item.getSNum() + " " + item.getStreetName() + " " + item.getStreetSuffix() + " " + item.getCity() + " " + item.getState() + " " + item.getPostcode());
+                    }
+                      
 
                     }
                 }
@@ -310,7 +374,7 @@ namespace demo_final_huy
             int index = 0;
             readFromFileAllProduct(file_product);
             productList.Sort((a, b) => a.getName().CompareTo(b.getName()));
-            Console.WriteLine("STT    Product name             Description           ProductPrice       MiddName        Email         Amount");
+            
             // đọc từ file bid danh sánh đấu giá
 
          
@@ -320,6 +384,10 @@ namespace demo_final_huy
                 if (user.getEmail().Equals(product.getEmail()) && product.getStatus() !=1)
                 {
                     index++;
+                    if (index ==1)
+                    {
+                        Console.WriteLine("STT    Product name             Description           ProductPrice       MiddName        Email         Amount");
+                    }
                     UserBid userBid = getBidMaxById(product.getId());
                    
                         displayProductInforSelf(product, index, userBid);
@@ -328,6 +396,7 @@ namespace demo_final_huy
                 }
                
             }
+            Console.WriteLine("ban k co j ca");
         }
 
 
@@ -346,7 +415,7 @@ namespace demo_final_huy
                 Console.WriteLine(" STT          Product name             Description           ProductPrice");
                 foreach (Product product in productList)
                 {
-                    if (!user.getEmail().Equals(product.getEmail()))
+                    if (!user.getEmail().Equals(product.getEmail()) && product.getStatus() !=1)
                     {
                         index++;
                         UserBid userBid = getBidMaxById(product.getId());
@@ -380,13 +449,20 @@ namespace demo_final_huy
                 Console.WriteLine("bạn chọn sản phẩm thứ mấy");
                 select = int.Parse(Console.ReadLine());
                 // lấy ra cái đấu giá cao nhất của sản phẩm 
-                
-                  UserBid max_user = getBidMaxById(productList[select - 1].getId());
+                updateListAfterSell();
+                  UserBid max_user = getBidMaxById(listProductAfterSell[select - 1].getId());
                      float amount = 0;
                 do
                 {
-
-                    Console.WriteLine("Bạn muốn trả bao nhiểu");
+                    if (max_user ==null)
+                    {
+                        Console.WriteLine("Bạn muốn trả bao nhiểu (gia cao nhat là :" + 0);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Bạn muốn trả bao nhiểu (gia cao nhat là :" + max_user.getAmount());
+                    }
+                    
                     String key = Console.ReadLine();
                    
                     if (key.Contains("$"))
@@ -409,12 +485,12 @@ namespace demo_final_huy
                 } while (check_amount);
                
                 
-                Console.WriteLine("Bạn đã trả "+ productList[select-1].getName());
-                Console.WriteLine("id cua sp " + productList[select - 1].getId());
+                Console.WriteLine("Bạn đã trả "+ listProductAfterSell[select-1].getName());
+                Console.WriteLine("id cua sp " + listProductAfterSell[select - 1].getId());
 
                 UserBid userBid = new UserBid();
-                userBid.setId(productList[select - 1].getId());
-                userBid.setName(productList[select - 1].getName());
+                userBid.setId(listProductAfterSell[select - 1].getId());
+                userBid.setName(listProductAfterSell[select - 1].getName());
                 userBid.setEmail(user.getEmail());
                 userBid.setBidName(user.getName());
                 userBid.setAmount(amount);
@@ -593,7 +669,7 @@ namespace demo_final_huy
         {
             if(userBid != null)
             {
-                Console.WriteLine(index + "   " + product.getName() + "                      " + product.getProductDescription() + "                    " + "$"+product.getProductPrice() + "      "+ userBid.getBidName()+"            " + userBid.getEmail() + "        " + userBid.getAmount());
+                Console.WriteLine(index + "   " + product.getName() + "                      " + product.getProductDescription() + "                    " + "$" + product.getProductPrice() + "      "+ userBid.getBidName()+ "            " + userBid.getEmail() + "        " + userBid.getAmount());
             }
             else
             {
@@ -793,10 +869,10 @@ namespace demo_final_huy
                             sw.Write("        ");
                             sw.Write((user.getPassword()).ToString());
                             sw.Write("        ");
-
+                          
                             sw.Write((user.getUNum()).ToString());
                             sw.Write("        ");
-
+                           
 
                             sw.Write((user.getSNum()).ToString());
                             sw.Write("        ");
@@ -1007,7 +1083,7 @@ namespace demo_final_huy
                 }
                 else
                 {
-                    return new UserBid();
+                    return null;
                 }
             }
             return new UserBid();
@@ -1043,6 +1119,7 @@ namespace demo_final_huy
             Console.WriteLine("bạn có muốn bán sp nào ");
             int select = int.Parse(Console.ReadLine());
             productList[select - 1].setStatus(1);
+            
             File.WriteAllText(file_product, String.Empty);
             foreach (Product pr in productList)
             {
@@ -1055,17 +1132,47 @@ namespace demo_final_huy
             int index = 0;
             readFromFileAllProduct(file_product);
             readFromFileAllInfor(file_name);
+            int total_item = 0;
+
+            // in ra tên bảng 
+
             foreach(Product product in productList)
             {
-                if(product.getStatus() == 1)
+                if(product.getStatus() == 1 )
                 {
                     index++;
+                    
                     UserBid userBid = getBidMaxById(product.getId());
-                    Console.WriteLine(index + "  " + product.getEmail() + "   " + product.getName() + "  " + product.getProductDescription() +"   " + product.getProductPrice() + " " + userBid.getAmount() + "   " + userBid.getDelivery());
+                    if (userBid.getEmail().Equals(user.getEmail()))
+                    {
+                  
+                        total_item++;
+                        if (index == 1)
+                        {
+                            Console.WriteLine("STT    Product name             Description           ProductPrice       MiddName        Email         Amount");
+                        }
+                        Console.WriteLine(index + "  " + product.getEmail() + "   " + product.getName() + "  " + product.getProductDescription() + "   " + product.getProductPrice() + " " + userBid.getAmount() + "   " + userBid.getDelivery());
+
+                    }
                 }
 
             }
+            if(total_item == 00)
+            {
+                Console.WriteLine("ban chua co j ca");
+            }
 
+        }
+
+        public static void updateListAfterSell()
+        {
+            foreach (Product product in productList)
+            {
+                if (product.getStatus() != 1)
+                {
+                    listProductAfterSell.Add(product);
+                }
+            }
         }
            
     }
